@@ -1,4 +1,27 @@
-langchain==1.0.3                                                            
-langchain-core==1.0.3
+langchain==1.0.5
+langchain_core==1.0.4
 python-dotenv==1.2.1
 streamlit==1.51.0
+beautifulsoup4==4.14.2
+fastapi==0.121.1
+html5lib==1.1
+jinja2==3.1.6
+langchain-astradb==1.0.0
+langchain-google-genai==3.0.1
+langchain-openai==1.0.2
+langchain-groq==1.0.0
+lxml==6.0.2
+python-dotenv==1.2.1
+python-multipart==0.0.20
+selenium==4.38.0
+streamlit==1.51.0
+undetected-chromedriver==3.5.5
+uvicorn==0.38.0
+structlog==25.5.0
+# langgraph
+# ragas
+# langchain-mcp-adapters
+# mcp
+# ddgs
+# langchain-openai
+# -e .

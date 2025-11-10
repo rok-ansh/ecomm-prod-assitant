@@ -2,9 +2,25 @@ import importlib.metadata
 
 packages = [
     "langchain",
-    "langchain-core",
+    "langchain_core",
     "python-dotenv",
-    "streamlit"
+    "streamlit",
+    "beautifulsoup4",
+    "fastapi",
+    "html5lib",
+    "jinja2",
+    "langchain-astradb",
+    "langchain-google-genai",
+    "langchain-openai",
+    "langchain-groq",
+    "lxml",
+    "python-dotenv",
+    "python-multipart",
+    "selenium",
+    "streamlit",
+    "undetected-chromedriver",
+    "uvicorn",
+    "structlog"
 ]
 
 for package in packages:
