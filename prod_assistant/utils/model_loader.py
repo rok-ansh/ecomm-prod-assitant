@@ -4,7 +4,7 @@ import json
 from dotenv import load_dotenv
 from prod_assistant.utils.config_loader import load_config
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
-from langchain_openai import ChatOpenAI
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_groq import ChatGroq
 from prod_assistant.logger import GLOBAL_LOGGER as log
 from prod_assistant.exception.custom_exception import ProductAssistantException
@@ -46,11 +46,13 @@ class ModelLoader:
 
     def load_embeddings(self):
         """
-        Load and return embedding model from Google Generative AI.
+        Load and return embedding model based on config provider (openai or google).
         """
         try:
-            model_name = self.config["embedding_model"]["model_name"]
-            log.info("Loading embedding model", model=model_name)
+            embedding_config = self.config["embedding_model"]
+            provider = embedding_config.get("provider", "openai")
+            model_name = embedding_config.get("model_name")
+            log.info("Loading embedding model", provider=provider, model=model_name)
 
             # Patch: Ensure an event loop exists for gRPC aio
             try:
@@ -58,10 +60,19 @@ class ModelLoader:
             except RuntimeError:
                 asyncio.set_event_loop(asyncio.new_event_loop())
 
-            return GoogleGenerativeAIEmbeddings(
-                model=model_name,
-                google_api_key=self.api_key_mgr.get("GOOGLE_API_KEY")  # type: ignore
-            )
+            if provider == "openai":
+                return OpenAIEmbeddings(
+                    model=model_name,
+                    api_key=self.api_key_mgr.get("OPENAI_API_KEY")
+                )
+            elif provider == "google":
+                return GoogleGenerativeAIEmbeddings(
+                    model=model_name,
+                    google_api_key=self.api_key_mgr.get("GOOGLE_API_KEY")
+                )
+            else:
+                raise ValueError(f"Unsupported embedding provider: {provider}")
+
         except Exception as e:
             log.error("Error loading embedding model", error=str(e))
             raise ProductAssistantException("Failed to load embedding model", sys)

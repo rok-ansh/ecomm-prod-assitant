@@ -22,6 +22,7 @@ class DataIngestion:
         self.product_data = self._load_csv()
         # Load configuration
         self.config = load_config()
+        
 
 
     def _load_env_variables(self):
@@ -70,20 +71,27 @@ class DataIngestion:
         """Load product data from CSV file."""
         df = pd.read_csv(self.csv_path)
         # Validate required columns
-        expected_columns = {'product_name', 'product_title', 'rating', 'total_reviews', 'price', 'top_reviews'}
+        expected_columns = {'product_id', 'product_title', 'rating', 'total_reviews', 'price', 'top_reviews'}
 
         # Check if all expected columns are present
         if not expected_columns.issubset(set(df.columns)):
             raise ValueError(f"CSV file is missing required columns. Expected columns: {expected_columns}")
-        
+
+        # Ensure there is a product_id column; if missing, generate one from the row index
+        if 'product_id' not in df.columns:
+            df = df.reset_index(drop=True)
+            # generate a simple integer id starting at 1
+            df['product_id'] = (df.index + 1).astype(str)
+
         return df
 
     def transform_data(self):
         """Transform product data into list of Langchain Document objects."""
         product_list = []
 
-        # Iterating and checking all the row values and appending it to product_list 
+        # Iterate through each row in the DataFrame and create product entries
         for _, row in self.product_data.iterrows():
+            # Create a dictionary for each product entry with relevant details
             product_entry = {
                 "product_id" : row["product_id"], 
                 "product_title" : row["product_title"],
@@ -94,8 +102,11 @@ class DataIngestion:
             }
             product_list.append(product_entry)
 
+        
         documents = []
+        # Convert each product entry into a Langchain Document
         for entry in product_list:
+            # Create metadata dictionary
             metadata = {
                 "product_id" : entry["product_id"], 
                 "product_title" : entry["product_title"],
@@ -103,6 +114,7 @@ class DataIngestion:
                 "total_reviews" : entry["total_reviews"],
                 "price" : entry["price"],
             }
+            # Create Document with content and metadata
             doc = Document(page_content=entry['top_reviews'], metadata=metadata)
             documents.append(doc)
 
@@ -112,7 +124,9 @@ class DataIngestion:
         
     def store_in_vetcor_db(self, documents : List[Document]):
         """Store transformed documents in AstraDB Vector Store."""
-        collection_name = self.config["astra-db"]["collection_name"]
+        # Initialize AstraDB Vector Store with configuration
+        collection_name = self.config["astra_db"]["collection_name"]
+        # Create AstraDBVectorStore instance
         vstore = AstraDBVectorStore(
             embedding = self.model_loader.load_embeddings(),
             collection_name = collection_name,
@@ -120,28 +134,35 @@ class DataIngestion:
             token = self.db_application_token,
             namespace = self.db_keyspace
         )
-
+        # Add documents to the vector store
         inserted_ids = vstore.add_documents(documents)
         print(f"Successfully inserted {len(inserted_ids)} documents into Astra DB. ")
+        # Return the vector store instance and inserted document IDs
         return vstore, inserted_ids
 
 
     def run_pipeline(self):
         """Run the complete data ingestion pipeline. tranform data and store into vector DB. """
+        # Transform data into Document objects
         documents = self.transform_data()
-        vstore, _ = self.store_in_vetcor_db()
+        # Store documents in AstraDB Vector Store (pass documents)
+        vstore, _ = self.store_in_vetcor_db(documents)
 
         # Optionally do a quick check 
+        # Perform a sample similarity search to verify data insertion
         query = "can you tell me the low budget iphone"
+        # Conduct similarity search
         results = vstore.similarity_search(query)
 
-        print("f\nSample search result for the query : {query}")
+        print(f"\nSample search result for the query : {query}")
+        # Print out the search results
         for res in results:
             print(f"Content : {res.page_content}\nMetadata : {res.metadata}\n")
 
     
 # Run if this file is executed directy
 if __name__ == "__main__":
+    # Create DataIngestion instance and run the pipeline
     ingestion = DataIngestion()
     ingestion.run_pipeline()
 

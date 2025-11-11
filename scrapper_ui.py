@@ -1,11 +1,11 @@
 
 import streamlit as st
-from prod_assistant.etl.data_scrapper import  FlipkartScrapper
+from prod_assistant.etl.data_scrapper import FlipkartScraper
 from prod_assistant.etl.data_ingestion import DataIngestion
 import os
 
-# flipkart_scraper = FlipkartScrapper()
-# output_path = "data/product_reviews.csv"
+flipkart_scraper = FlipkartScraper()
+output_path = "data/product_reviews.csv"
 st.title("📦 Product Review Scraper")
 
 if "product_inputs" not in st.session_state:
