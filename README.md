@@ -30,42 +30,22 @@ These are all the commands that you need to run on your command prompt
 22. Install the live server extension in VS Code for testing the HTML
 
 For accessing the DataStax, here is a link: https://accounts.datastax.com/session-service/v1/login
-
 Vectordb Comparison: https://superlinked.com/vector-db-comparison
 
 Once you log in to the DataStax Vector page, you will get the following page
 ECR_REGISTRY=<account-id>.dkr.ecr.<aws_region>.amazonaws.com
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 For running the streamlit UI, the command is:
-
 streamlit run <file_path_of_streamlit_python_file>
 
+
+
+for getting module not found prod_assistant
 For installing your prod_assistant as a package use the .toml file
-
 For install the package through the toml file here is a command
-
 Uv pip install -e .
-
  Or mention -e . in th requirements.txt and run the command
-
 uv pip install -r requirements.txt
-
 (NOTE: Same thing we can do with the setup.py file and we have already done it in the previous project)
 
 Command for executing the fastapi:
