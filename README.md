@@ -2,29 +2,28 @@ Project-Github-Link: https://github.com/sunnysavita10/ecomm-prod-assistant
 
 These are all the commands that you need to run on your command prompt
 
-Write Python in your terminal
-If you have Python, then no need to install it
- uv --version
-If you are not able to get the version
-Pip install uv
-import shutil
-print(shutil.which("uv"))
+1. Write Python in your terminal
+2.  you have Python, then no need to install it
+3. uv --version
+4. If you are not able to get the version
+5. Pip install uv
+6. import shutil
+7. print(shutil.which("uv"))
  
- 6. Uv init <my-project-name>
-7. uv pip list
+8. Uv init <my-project-name>
+9. uv pip list
  
-8. uv python list
-uv venv env --python cpython-3.10.18-windows-x86_64-none
-uv venv <your-env-namne> --python <your-python-version>
-Note: Please use either 3.10, 3.11, or 3.12
-Command Prompt (CMD)  .\<your-env-nanme>\Scripts\activate.bat
-Git Bash ya WSL terminal, or MAC Terminal:
-source <your-env-nanme>/Scripts/activate
-
-
+10. uv python list
+11. uv venv env --python cpython-3.10.18-windows-x86_64-none
+12. uv venv <your-env-namne> --python <your-python-version>
+13. Note: Please use either 3.10, 3.11, or 3.12
+14. Command Prompt (CMD)  .\<your-env-nanme>\Scripts\activate.bat
+15. Git Bash ya WSL terminal, or MAC Terminal:
+16. source <your-env-nanme>/Scripts/activate
+17. this work work for windows too venv\Scripts\activate
 18. If your git is asking for a login to publish the repo, execute the command below
-git config --global user.name "Your Name"
-git config --global user.email "your-email@example.com"
+    git config --global user.name "Your Name"
+    git config --global user.email "your-email@example.com"
 19. UV add <package_name>
 20. Uv add -r requirements.txt
 21. Streamlit run <give your streamlit python filename>
