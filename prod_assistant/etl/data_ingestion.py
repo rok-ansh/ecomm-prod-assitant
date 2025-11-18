@@ -86,7 +86,7 @@ class DataIngestion:
         return df
 
     def transform_data(self):
-        """Transform product data into list of Langchain Document objects."""
+        """Transform product data form dataframe into list of Langchain Document objects."""
         product_list = []
 
         # Iterate through each row in the DataFrame and create product entries
