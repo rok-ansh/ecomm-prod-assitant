@@ -14,3 +14,11 @@ wheels/
 
 logs
 data
+
+# Archived folders
+prod_assistant\retriever\archived\**
+prod_assistant\evaluation\archieved\**
+prod_assistant\workflow\archieved\**
+
+# Ignore the test files 
+test_*.py

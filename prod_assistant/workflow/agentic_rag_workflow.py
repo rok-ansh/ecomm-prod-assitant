@@ -6,7 +6,7 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 
 from prompt_library.prompts import PROMPT_REGISTRY, PromptType
-from retriever.retrieval import Retriever
+from retriever.archieved.retrieval import Retriever
 from utils.model_loader import ModelLoader
 from langgraph.checkpoint.memory import MemorySaver
 import asyncio
@@ -288,6 +288,15 @@ class AgenticRAG:
         # Extract and return the last message
         last_message = result["messages"][-1].content
         return last_message
+    
+        # Inorder to work with Evaluation metrics
+        # function call will be associated like we have done in retreival code
+        # we will get some score
+        # then we can put some condition
+        # if score > 0.75 
+        #     return last_message# then generate output
+        # else
+        #     continue the loop again
 
 
 # -----------Test the Workflow -----------
